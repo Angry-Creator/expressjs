@@ -1,9 +1,57 @@
 const express = require("express");
+const mysql = require("mysql2");
+const cors = require("cors");
 const app = express();
 const port = process.env.PORT || 3001;
-app.get("/", (req, res)=>{
-    res.send("IT WORKED");
+const db = mysql.createConnection({
+    host: "containers-us-west-65.railway.app",
+    user: "root",
+    password: "ZTRGMbSIK5xTEwRUEkE0",
+    port: "7871",
+    database: "railway"
 });
+const getDataQuery = "SELECT * FROM CLIENT_DB";
+const postDataQuery = "INSERT INTO CLIENT_DB (client_firstname, client_lastname, client_phonenumber, client_password, client_pin, client_amount) VALUES (?,?,?,?,?,?)";
+const deleteDataQuery = "DELETE FROM CLIENT_DB WHERE client_firstname = ? AND client_lastname = ? AND client_phonenumber = ? AND client_password = ? AND client_pin = ? AND client_amount = ? ";
+function checkingData(client_firstname, client_lastname, client_phonenumber, client_password, client_pin, client_amount){
+    return true;
+};
+app.use(express.json());
+app.use(cors());
+app.get("/GetData", (req, res)=>{
+    db.query(getDataQuery, (error, result)=>{
+        if(error) throw error;
+        res.send(result);
+    });
+});
+app.post("/PostData", (req, res)=>{
+    const client_firstname = req.body.client_firstname;
+    const client_lastname = req.body.client_lastname;
+    const client_phonenumber = req.body.client_phonenumber;
+    const client_password = req.body.client_password;
+    const client_pin = req.body.client_pin;
+    const client_amount = req.body.client_amount;
+    if(checkingData()){
+        db.query(postDataQuery, [client_firstname, client_lastname, client_phonenumber, client_password, client_pin, client_amount], (error, result)=>{
+            if (error) throw error;
+        });
+        res.end();
+    };
+});
+app.delete("/DeleteData", (req, res)=>{
+    const client_firstname = req.body.client_firstname;
+    const client_lastname = req.body.client_lastname;
+    const client_phonenumber = req.body.client_phonenumber;
+    const client_password = req.body.client_password;
+    const client_pin = req.body.client_pin;
+    const client_amount = req.body.client_amount;
+    if(checkingData()){
+        db.query(deleteDataQuery, [client_firstname, client_lastname, client_phonenumber, client_password, client_pin, client_amount], (error, result)=>{
+            if (error) throw error;
+        });
+        res.end();
+    };
+})
 app.listen(port, ()=>{
     console.log("Listening to PORT: ", port)
 });
