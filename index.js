@@ -22,7 +22,6 @@ function checkingLocationData(time, location){
     return true;
 }
 app.use(express.json());
-app.use(express.text());
 app.use(cors());
 app.get("/GetData", (req, res)=>{
     db.query(getDataQuery, (error, result)=>{
@@ -65,7 +64,6 @@ app.get('/GetLocation', (req, res)=>{
     });
 });
 app.post('/PostLocation', (req, res)=>{
-    req.body = JSON.parse({...req.body});
     const date = req.body.date;
     const location = req.body.location;
     db.query(postLocationQuery, [date, location]), (err, result)=>{
