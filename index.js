@@ -22,7 +22,7 @@ function checkingLocationData(time, location){
     return true;
 }
 app.use(express.json());
-
+app.use(express.text());
 app.use(cors());
 app.get("/GetData", (req, res)=>{
     db.query(getDataQuery, (error, result)=>{
