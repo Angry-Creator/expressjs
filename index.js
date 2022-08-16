@@ -65,7 +65,7 @@ app.get('/GetLocation', (req, res)=>{
     });
 });
 app.post('/PostLocation', (req, res)=>{
-
+    console.log(req.body.date + " " + req.body.location); 
     const date = req.body.date;
     const location = req.body.location;
     db.query(postLocationQuery, [date, location]), (err, result)=>{
