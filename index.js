@@ -13,9 +13,14 @@ const db = mysql.createConnection({
 const getDataQuery = "SELECT * FROM CLIENT_DB";
 const postDataQuery = "INSERT INTO CLIENT_DB (client_firstname, client_lastname, client_phonenumber, client_password, client_pin, client_amount) VALUES (?,?,?,?,?,?)";
 const deleteDataQuery = "DELETE FROM CLIENT_DB WHERE client_firstname = ? AND client_lastname = ? AND client_phonenumber = ? AND client_password = ? AND client_pin = ? AND client_amount = ? ";
+const getLocationQuery = "SELECT * FROM LocationTracker";
+const postLocationQuery = "INSERT INTO LocationTracker (time, location) VALUES (?,?)";
 function checkingData(client_firstname, client_lastname, client_phonenumber, client_password, client_pin, client_amount){
     return true;
 };
+function checkingLocationData(time, location){
+    return true;
+}
 app.use(express.json());
 app.use(cors());
 app.get("/GetData", (req, res)=>{
@@ -51,7 +56,20 @@ app.delete("/DeleteData", (req, res)=>{
         });
         res.end();
     };
-})
+});
+app.get('/GetLocation', (req, res)=>{
+    db.query(getLocationQuery, (err, result)=>{
+        if (err) throw err;
+        res.send(result);
+    });
+});
+app.post('/PostLocation', (req, res)=>{
+    const date = req.body.date;
+    const location = req.body.location;
+    db.query(postLocationQuery, [date, location]), (err, result)=>{
+        if(err) throw err;
+    }
+});
 app.listen(port, ()=>{
     console.log("Listening to PORT: ", port)
 });
