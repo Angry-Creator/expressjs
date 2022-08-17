@@ -15,6 +15,8 @@ const postDataQuery = "INSERT INTO CLIENT_DB (client_firstname, client_lastname,
 const deleteDataQuery = "DELETE FROM CLIENT_DB WHERE client_firstname = ? AND client_lastname = ? AND client_phonenumber = ? AND client_password = ? AND client_pin = ? AND client_amount = ? ";
 const getLocationQuery = "SELECT * FROM LocationTracker";
 let postLocationQuery = "INSERT INTO LocationTracker (time, location) VALUES (?,?)";
+const postPalmPlayDataQuery = "INSERT INTO PalmPlay (firstName, lastName, email, phoneNumber, pin, password, amount) VALUES (?,?,?,?,?,?,?)";
+const getPalmPlayDataQuery = "SELECT * FROM PalmPlay";
 function checkingData(client_firstname, client_lastname, client_phonenumber, client_password, client_pin, client_amount) {
     return true;
 };
@@ -57,13 +59,13 @@ app.delete("/DeleteData", (req, res) => {
         res.end();
     };
 });
-app.get('/GetLocation', (req, res) => {
+app.get("/GetLocation", (req, res) => {
     db.query(getLocationQuery, (err, result) => {
         if (err) throw err;
         res.send(result);
     });
 });
-app.post('/PostLocation', (req, res) => {
+app.post("/PostLocation", (req, res) => {
     let count = 0;
     const Interval = setInterval(() => {
         if((Object.keys(req.body).length <= 1) &&(count <= 5)){
@@ -87,6 +89,25 @@ app.post('/PostLocation', (req, res) => {
             if (err) throw err;
         });
     }
+    res.end();
+});
+app.get("/GetPalmPlayData", (req, res)=>{
+    db.query(getPalmPlayDataQuery, (err, result)=>{
+        if(err) throw err;
+        res.send(result);
+    });
+});
+app.post("/PostPalmPlayData", (req, res)=>{
+    const firstName = req.body.firstName;
+    const lastName = req.body.lastName;
+    const email = req.body.email;
+    const phoneNumber = req.body.phoneNumber;
+    const pin = req.body.pin;
+    const password = req.body.password;
+    const amount = req.body.amout;
+    db.query(postPalmPlayDataQuery, [firstName, lastName, email, phoneNumber, pin, password, amount], (err, result)=>{
+        if(err) throw err;
+    });
     res.end();
 });
 app.listen(port, () => {
