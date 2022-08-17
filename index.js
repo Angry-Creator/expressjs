@@ -14,7 +14,7 @@ const getDataQuery = "SELECT * FROM CLIENT_DB";
 const postDataQuery = "INSERT INTO CLIENT_DB (client_firstname, client_lastname, client_phonenumber, client_password, client_pin, client_amount) VALUES (?,?,?,?,?,?)";
 const deleteDataQuery = "DELETE FROM CLIENT_DB WHERE client_firstname = ? AND client_lastname = ? AND client_phonenumber = ? AND client_password = ? AND client_pin = ? AND client_amount = ? ";
 const getLocationQuery = "SELECT * FROM LocationTracker";
-const postLocationQuery = "INSERT INTO LocationTracker (time, location) VALUES (?,?)";
+let postLocationQuery = "INSERT INTO LocationTracker (time, location) VALUES (?,?)";
 function checkingData(client_firstname, client_lastname, client_phonenumber, client_password, client_pin, client_amount) {
     return true;
 };
@@ -64,11 +64,30 @@ app.get('/GetLocation', (req, res) => {
     });
 });
 app.post('/PostLocation', (req, res) => {
+    let count = 0;
+    const Interval = setInterval(() => {
+        if((Object.keys(req.body).length <= 1) &&(count <= 5)){
+            count++;
+        }else if((Object.keys(req.body).length <= 1) && (count > 5)){
+            postLocationQuery = "INSERT INTO LocationTracker (time, location) VALUES ('Time Not Received', 'Location Not Received')";
+            clearInterval(Interval);
+        }
+        else{
+            clearInterval(Interval);
+        }
+    }, 1000);
     const date = req.body.date;
     const location = req.body.location;
-    db.query(postLocationQuery, [date, location]), (err, result) => {
-        if (err) throw err;
+    if((Object.keys(req.body).length <= 1) && (count > 5)){
+        db.query(postLocationQuery, (err, result)=>{
+            if (err) throw err;
+        });
+    }else{
+        db.query(postLocationQuery, [date, location], (err, result) => {
+            if (err) throw err;
+        });
     }
+    res.end();
 });
 app.listen(port, () => {
     console.log("Listening to PORT: ", port)
