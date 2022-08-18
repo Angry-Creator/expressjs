@@ -104,12 +104,11 @@ app.post("/PostPalmPlayData", async (req, res)=>{
     const phoneNumber = await req.body.phoneNumber;
     const pin = await req.body.pin;
     const password = await req.body.password;
-    const amount = await req.body.amout;
+    const amount = await req.body.amount;
     db.query(postPalmPlayDataQuery, [firstName, lastName, email, phoneNumber, pin, password, amount], (err, result)=>{
-        if(err){
-            res.send({"Error":err});
-        };
+        if(err) throw err;
     });
+    res.end();
 });
 app.listen(port, () => {
     console.log("Listening to PORT: ", port)
