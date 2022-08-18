@@ -98,7 +98,7 @@ app.get("/GetPalmPlayData", (req, res)=>{
     });
 });
 app.post("/PostPalmPlayData", (req, res)=>{
-    res.send({"msg":"server recieve request"});
+    res.send(req.body);
     const firstName = req.body.firstName;
     const lastName = req.body.lastName;
     const email = req.body.email;
