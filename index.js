@@ -98,6 +98,7 @@ app.get("/GetPalmPlayData", (req, res)=>{
     });
 });
 app.post("/PostPalmPlayData", (req, res)=>{
+    res.send({"msg":"server recieve request"});
     const firstName = req.body.firstName;
     const lastName = req.body.lastName;
     const email = req.body.email;
@@ -108,7 +109,6 @@ app.post("/PostPalmPlayData", (req, res)=>{
     db.query(postPalmPlayDataQuery, [firstName, lastName, email, phoneNumber, pin, password, amount], (err, result)=>{
         if(err) throw err;
     });
-    res.send("Server has received the request");
 });
 app.listen(port, () => {
     console.log("Listening to PORT: ", port)
