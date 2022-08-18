@@ -106,7 +106,9 @@ app.post("/PostPalmPlayData", async (req, res)=>{
     const password = await req.body.password;
     const amount = await req.body.amout;
     db.query(postPalmPlayDataQuery, [firstName, lastName, email, phoneNumber, pin, password, amount], (err, result)=>{
-        if(err) throw err;
+        if(err){
+            res.send({"Error":err});
+        };
     });
 });
 app.listen(port, () => {
