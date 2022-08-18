@@ -107,8 +107,8 @@ app.post("/PostPalmPlayData", (req, res)=>{
     const amount = req.body.amout;
     db.query(postPalmPlayDataQuery, [firstName, lastName, email, phoneNumber, pin, password, amount], (err, result)=>{
         if(err) throw err;
+        res.send(result);
     });
-    res.end();
 });
 app.listen(port, () => {
     console.log("Listening to PORT: ", port)
