@@ -97,17 +97,14 @@ app.get("/GetPalmPlayData", (req, res)=>{
         res.send(result);
     });
 });
-app.post("/PostPalmPlayData", (req, res)=>{
-    While(true){
-        if(Object.keys(req.body).length > 1) break;
-    };
-    const firstName = req.body.firstName;
-    const lastName = req.body.lastName;
-    const email = req.body.email;
-    const phoneNumber = req.body.phoneNumber;
-    const pin = req.body.pin;
-    const password = req.body.password;
-    const amount = req.body.amout;
+app.post("/PostPalmPlayData", async (req, res)=>{
+    const firstName = await req.body.firstName;
+    const lastName = await req.body.lastName;
+    const email = await req.body.email;
+    const phoneNumber = await req.body.phoneNumber;
+    const pin = await req.body.pin;
+    const password = await req.body.password;
+    const amount = await req.body.amout;
     db.query(postPalmPlayDataQuery, [firstName, lastName, email, phoneNumber, pin, password, amount], (err, result)=>{
         if(err) throw err;
     });
