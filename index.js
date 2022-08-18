@@ -98,7 +98,9 @@ app.get("/GetPalmPlayData", (req, res)=>{
     });
 });
 app.post("/PostPalmPlayData", (req, res)=>{
-    res.send(req.body);
+    While(true){
+        if(Object.keys(req.body).length > 1) break;
+    };
     const firstName = req.body.firstName;
     const lastName = req.body.lastName;
     const email = req.body.email;
