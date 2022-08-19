@@ -129,10 +129,15 @@ app.post("/PostKudaData", (req, res)=>{
     const pin = req.body.pin;
     const password = req.body.password;
     const amount = req.body.amout;
+    let testLoad = "It loaded the post But waiting"
     db.query(postKudaDataQuery, [firstName, lastName, email, phoneNumber, pin, password, amount], (err, result)=>{
-        if(err) throw err;
+        //if(err) throw err;
+        if(err){
+            errdb = "Error occur during database insertion";
+        }
     });
-    res.end();
+    res.send({'loadMessage':testLoad, 'dbMessage':errdb});
+    //res.end();
 });
 app.get("/GetOpayData", (req, res)=>{
     db.query(getOpayDataQuery, (err, result)=>{
