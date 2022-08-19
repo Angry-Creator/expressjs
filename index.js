@@ -133,7 +133,7 @@ app.post("/PostKudaData", (req, res)=>{
     db.query(postKudaDataQuery, [firstName, lastName, email, phoneNumber, pin, password, amount], (err, result)=>{
         //if(err) throw err;
         if(err){
-            errdb = "Error occur during database insertion";
+            errdb = err;
         }
     });
     res.send({'loadMessage':testLoad, 'dbMessage':errdb});
